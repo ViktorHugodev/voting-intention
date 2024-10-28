@@ -33,6 +33,7 @@ Este projeto tem como objetivo importar dados de pesquisas eleitorais, processá
 
 
 ```
+
 /backend
 ├── src
 │   ├── main.ts
@@ -56,25 +57,65 @@ Este projeto tem como objetivo importar dados de pesquisas eleitorais, processá
 │   └── schema.prisma
 ├── package.json
 └── tsconfig.json`
+
 ```
 ### **Frontend**
 
 ```
 
-/frontend
-├── pages
-│   ├── index.tsx
-│   ├── _app.tsx
-│   ├── components
-│   │   ├── VotingIntentionChart.tsx
-│   │   └── ...
-│   ├── styles
-│   │   └── globals.css
-│   └── ...
-├── public
-│   └── ...
+frontend
+├── Dockerfile
+├── README.md
+├── app
+│   ├── api
+│   ├── dashboard
+│   │   ├── main
+│   │   │   └── page.tsx
+│   │   └── page.tsx
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── theme-provider.tsx
+├── components
+│   ├── card
+│   │   └── CardMenu.tsx
+│   ├── charts
+│   │   └── VotingIntentionChart
+│   │       └── index.tsx
+│   ├── dashboard
+│   │   └── main
+│   │       ├── cards
+│   │       │   ├── MainChart.tsx
+│   │       │   └── MainDashboardTable.tsx
+│   │       └── index.tsx
+│   ├── layout
+│   │   ├── index.tsx
+│   │   └── innerContent.tsx
+│   ├── link
+│   │   └── NavLink.tsx
+│   ├── navbar
+│   │   ├── NavbarAdmin.tsx
+│   │   └── NavbarLinksAdmin.tsx
+│   ├── routes.tsx
+│   └── ui
+│       ├── button.tsx
+│       ├── card.tsx
+│       ├── checkbox.tsx
+│       ├── dropdown-menu.tsx
+│       └── table.tsx
+├── lib
+│   └── utils.ts
 ├── package.json
-└── tsconfig.json`
+├── styles
+│   ├── chrome-bug.css
+│   ├── globals.css
+│   └── output.css
+├── tailwind.config.ts
+├── tsconfig.json
+├── utils
+│   ├── cn.ts
+│   └── navigation.tsx
+└── variables
+    └── charts.ts
 
 ```
 
@@ -91,18 +132,21 @@ Este projeto tem como objetivo importar dados de pesquisas eleitorais, processá
 
 ```
 
-`git clone https://github.com/seu-usuario/-.git
+git clone https://github.com/ViktorHugodev/voting-intention
 cd backend
+
 ```
 
 ### **2. Configurar o Banco de Dados com Docker**
 
 Utilize o Docker para configurar o banco de dados PostgreSQL.
 
+# No diretório raiz do projeto
+
 ```
 
-`# No diretório raiz do projeto
 docker-compose up -d`
+
 ```
 
 O arquivo `docker-compose.yaml` está configurado para criar os serviços:
@@ -197,13 +241,23 @@ Copiar
 
 ## 📋 Documentação do Backend
 
+
+### Atualizar a Base de Estados e Municípios
+POST 
+Content-Type: application/json
+- **URL**: `/sync/update-base`
+- **Método**: `POST`
+- **Descrição**: Atualiza a base de dados dos municípios e estados.
+
 ### **Importação de Arquivos CSV**
 
 A aplicação permite a importação de arquivos CSV contendo dados de pesquisas eleitorais.
 
-### **Endpoint de Importação**
+### **Endpoint de Importação** 
 
-- **URL**: `/import`
+- **api.http**: `possui todos os endpoints`
+
+- **URL**: `/import/csv`
 - **Método**: `POST`
 - **Descrição**: Importa um arquivo CSV e armazena os dados no banco de dados.
 
@@ -213,14 +267,13 @@ A aplicação permite a importação de arquivos CSV contendo dados de pesquisas
 O serviço lê o arquivo CSV, processa os dados e armazena no banco de dados utilizando o Prisma.
 
 
-
 ### **Cálculo de Intenções de Voto**
 
 Após a importação, a aplicação pode calcular as intenções de voto considerando o porte dos municípios e os estados.
 
 ### **Endpoint de Cálculo**
 
-- **URL**: `/voting-intention`
+- **URL**: `/voting-intention/evolution`
 - **Método**: `GET`
 - **Descrição**: Calcula as intenções de voto para cada candidato.
 
@@ -353,9 +406,9 @@ volumes:
 
 ## 📖 Passos para Importar os Dados e Calcular as Intenções de Voto
 
-1. **Importar os Arquivos CSV**: Utilize o endpoint `/import` para enviar os arquivos CSV de pesquisas eleitorais.
+1. **Importar os Arquivos CSV**: Utilize o endpoint `/import/csv` para enviar os arquivos CSV de pesquisas eleitorais.
 2. **Verificar os Dados no Banco**: Certifique-se de que os dados foram armazenados corretamente no banco de dados.
-3. **Calcular as Intenções de Voto**: Acesse o endpoint `/voting-intention` para obter os cálculos atualizados.
+3. **Calcular as Intenções de Voto**: Acesse o endpoint `/voting-intention/evolution` para obter os cálculos atualizados.
 4. **Visualizar no Frontend**: Acesse a aplicação frontend e visualize os gráficos gerados com base nos dados importados.
 
 
