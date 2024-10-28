@@ -1,0 +1,30 @@
+### Atualizar a Base de Estados e Municípios
+POST http://localhost:3000/sync/update-base
+Content-Type: application/json
+
+###
+
+### Importar Dados do CSV de Pesquisas
+POST http://localhost:3000/import/csv
+Content-Type: multipart/form-data
+
+# Substitua 'C:/caminho/para/seu/arquivo.csv' pelo caminho real do seu arquivo CSV
+@file = C:/dev/P1.csv
+
+###
+
+### Calcular as Intenções de Voto
+GET http://localhost:3333/calculation/calculate
+Content-Type: application/json
+
+
+### Calcular as Intenções de Voto
+GET http://localhost:3333/surveys
+Content-Type: application/json
+
+
+### Calcular as Intenções de Voto
+GET http://localhost:3333/voting-intention/evolution
+Content-Type: application/json
+
+###

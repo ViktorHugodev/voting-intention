@@ -1,0 +1,53 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model State {
+  id             Int            @id
+  name           String
+  abbreviation   String         @unique
+  municipalities Municipality[]
+}
+
+model Municipality {
+  id         Int      @id
+  name       String
+  stateId    Int
+  state      State    @relation(fields: [stateId], references: [id])
+  population Int
+  surveys    Survey[]
+}
+
+model Survey {
+  id             Int          @id @default(autoincrement())
+  surveyId       String
+  date           DateTime
+  municipalityId Int
+  municipality   Municipality @relation(fields: [municipalityId], references: [id])
+  votes          Vote[]
+
+  @@unique([surveyId, municipalityId], name: "surveyId_municipalityId_unique")
+}
+
+model Vote {
+  id          Int   @id @default(autoincrement())
+  candidateId Int
+  percentage  Float
+  surveyId    Int
+
+  survey    Survey    @relation(fields: [surveyId], references: [id])
+  candidate Candidate @relation(fields: [candidateId], references: [id])
+
+  @@index([candidateId], name: "candidateId_idx")
+}
+
+model Candidate {
+  id    Int    @id
+  name  String
+  votes Vote[]
+}
